@@ -31,7 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xeariix.composex.sizes.Paddings
+import com.xeariix.composex.sizes.AppStyle
 
 /**
  * A highly customizable icon chip component that displays a label and optionally an icon when selected.
@@ -99,9 +99,9 @@ fun SelectableIconChip(
                             modifier = Modifier
                                 .size(22.dp)
                                 .padding(
-                                    top = Paddings.empty,
-                                    bottom = Paddings.empty,
-                                    end = Paddings.small,
+                                    top = AppStyle.Paddings.Empty,
+                                    bottom = AppStyle.Paddings.Empty,
+                                    end = AppStyle.Paddings.Small,
                                 ),
                             tint = if (!isClicked) iconColor else Color.White,
                         )
