@@ -39,7 +39,7 @@ import com.xeariix.composex.sizes.Paddings
  * This chip can be used in filters, selection groups, or settings where visual feedback is required upon interaction.
  * The appearance of the chip dynamically changes based on its clicked state, including background, text, and icon color.
  *
- * @param name the text displayed inside the chip.
+ * @param text the text displayed inside the chip.
  * @param imageVector optional [ImageVector] to display as an icon when the chip is selected.
  * @param modifier optional [Modifier] to be applied to the chip.
  * @param containerColor the background [Color] of the chip in its default (unclicked) state.
@@ -52,7 +52,7 @@ import com.xeariix.composex.sizes.Paddings
  */
 @Composable
 fun SelectableIconChip(
-    name: String,
+    text: String,
     modifier: Modifier = Modifier,
     imageVector: ImageVector? = null,
     containerColor: Color = MaterialTheme.colorScheme.onTertiary,
@@ -110,7 +110,7 @@ fun SelectableIconChip(
             }
 
             Text(
-                text = name,
+                text = text,
                 fontSize = 19.sp,
                 style = TextStyle(color = if (!isClicked) textColor else Color.White)
             )
@@ -122,7 +122,7 @@ fun SelectableIconChip(
 @Composable
 fun IconChipPreview() {
     SelectableIconChip(
-        name = "Filter",
+        text = "Filter",
     )
 }
 
@@ -130,7 +130,7 @@ fun IconChipPreview() {
 @Composable
 fun IconChipIsClickedPreview() {
     SelectableIconChip(
-        name = "Filter",
+        text = "Filter",
         imageVector = Icons.Default.Done,
         isClicked = true,
     )
