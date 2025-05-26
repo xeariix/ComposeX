@@ -41,21 +41,22 @@ import com.xeariix.composex.sizes.AppStyle
  * The appearance of the chip dynamically changes based on its clicked state, including background, text, and icon color.
  *
  * @param text the text displayed inside the chip.
- * @param imageVector optional [ImageVector] to display as an icon when the chip is selected.
- * @param modifier optional [Modifier] to be applied to the chip.
- * @param containerColor the background [Color] of the chip in its default (unclicked) state.
- * @param iconColor the [Color] applied to the icon when visible.
- * @param textColor the [Color] applied to the label text in the default state.
- * @param shape the [Shape] defining the chip's outline.
- * @param elevation the [CardElevation] controlling the elevation of the chip in various states.
- * @param border optional [BorderStroke] to draw around the chip’s container.
- * @param isClicked indicates whether the chip is currently selected, triggering visual changes and optional icon visibility.
+ * @param onClick called when this button is clicked
+ * @param modifier optional [Modifier] to be applied to the chip
+ * @param imageVector optional [ImageVector] to display as an icon when the chip is selected
+ * @param containerColor the background [Color] of the chip in its default (unclicked) state
+ * @param iconColor the [Color] applied to the icon when visible
+ * @param textColor the [Color] applied to the label text in the default state
+ * @param shape the [Shape] defining the chip's outline
+ * @param elevation the [CardElevation] controlling the elevation of the chip in various states
+ * @param border optional [BorderStroke] to draw around the chip’s container
+ * @param isClicked indicates whether the chip is currently selected, triggering visual changes and optional icon visibility
  */
 @Composable
 fun SelectableIconChip(
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
     imageVector: ImageVector? = null,
     containerColor: Color = MaterialTheme.colorScheme.onTertiary,
     iconColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -125,6 +126,7 @@ fun SelectableIconChip(
 fun IconChipPreview() {
     SelectableIconChip(
         text = "Filter",
+        onClick = {},
     )
 }
 
@@ -133,6 +135,7 @@ fun IconChipPreview() {
 fun IconChipIsClickedPreview() {
     SelectableIconChip(
         text = "Filter",
+        onClick = {},
         imageVector = Icons.Default.Done,
         isClicked = true,
     )
