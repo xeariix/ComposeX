@@ -9,6 +9,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -54,6 +55,7 @@ import com.xeariix.composex.sizes.AppStyle
 fun SelectableIconChip(
     text: String,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     imageVector: ImageVector? = null,
     containerColor: Color = MaterialTheme.colorScheme.onTertiary,
     iconColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -70,7 +72,7 @@ fun SelectableIconChip(
     )
 
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClick),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = animatedContainerColor),
         elevation = elevation,
