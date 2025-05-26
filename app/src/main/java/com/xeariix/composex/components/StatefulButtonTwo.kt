@@ -1,30 +1,28 @@
 package com.xeariix.composex.components
-
+/*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.xeariix.composex.ButtonState
 import com.xeariix.composex.modifiers.backgroundBrushOrColor
 import com.xeariix.composex.sizes.AppStyle
 
@@ -34,18 +32,10 @@ import com.xeariix.composex.sizes.AppStyle
  *
  */
 @Composable
-fun StatefulButton(
-    text: String,
-    initialText: String,
+fun StatefulButtonTwo(
+    state: ButtonState, // TODO: Adjust for reusability
     modifier: Modifier = Modifier,
-    successModifier: Modifier = Modifier,
-    errorModifier: Modifier = Modifier,
-    state: ButtonState = ButtonState.Initial,
-    textColors: Map<ButtonState, Color> = ButtonState.entries.associateWith { MaterialTheme.colorScheme.primary },
-    fontSize: TextUnit = TextUnit.Unspecified,
-    fontWeight: FontWeight? = null,
-    successImageVector: ImageVector? = null,
-    errorImageVector: ImageVector? = null,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     contentAlignment: Alignment = Alignment.Center,
     buttonMinHeight: Dp = ButtonDefaults.MinHeight,
     buttonMinWidth: Dp = ButtonDefaults.MinWidth,
@@ -61,8 +51,11 @@ fun StatefulButton(
     tonalElevation: Dp = 0.dp,
     border: BorderStroke? = null,
     isLoading: Boolean = false,
-    loadingProgress: @Composable () -> Unit = { CircularProgressIndicator() },
     onClick: () -> Unit = {},
+    loadingContent: @Composable () -> Unit = { CircularProgressIndicator() },
+    initialContent: @Composable () -> Unit = {},
+    errorContent: @Composable RowScope.() -> Unit,
+    successContent: @Composable RowScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier
@@ -96,85 +89,26 @@ fun StatefulButton(
             contentAlignment = contentAlignment,
             propagateMinConstraints = propagateMinConstraints,
         ) {
-            when (state) {
-                ButtonState.Initial -> Text(
-                    text = initialText,
-                    color = textColors.getValue(state),
-                    fontWeight = fontWeight,
-                    fontSize = fontSize,
-                )
-
-                ButtonState.Loading -> loadingProgress()
-                ButtonState.Success -> Success(
-                    text = text,
-                    modifier = successModifier,
-                    textColor = textColors.getValue(state),
-                    imageVector = successImageVector,
-                )
-
-                ButtonState.Error -> Error(
-                    text = text,
-                    modifier = errorModifier,
-                    imageVector = errorImageVector,
-                )
+            Row(horizontalArrangement = horizontalArrangement) {
+                when (state) {
+                    is com.xeariix.composex.UiState.ButtonState.Initial -> initialContent()
+                    is com.xeariix.composex.UiState.ButtonState.Loading -> loadingContent()
+                    is com.xeariix.composex.UiState.ButtonState.Success -> successContent()
+                    is com.xeariix.composex.UiState.ButtonState.Error -> errorContent()
+                }
             }
         }
     }
 }
 
-@Composable
-fun Success(
-    text: String,
-    modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.onBackground,
-    imageVector: ImageVector? = null,
-    contentDescription: String? = null,
-    fontWeight: FontWeight? = null,
-    fontSize: TextUnit = TextUnit.Unspecified,
-) {
-    Row(modifier = modifier) {
-        if (imageVector != null) {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = contentDescription
-            )
-        }
-        Text(
-            text = text,
-            color = textColor,
-            fontSize = fontSize,
-            fontWeight = fontWeight,
-        )
-    }
-}
-
-@Composable
-fun Error(
-    text: String,
-    modifier: Modifier = Modifier,
-    imageVector: ImageVector? = null,
-) {
-    Text(text = "Error")
-}
-
-enum class ButtonStyle {
-    Filled,
-    Outlined,
-}
-
-enum class ButtonState {
-    Initial,
-    Loading,
-    Success,
-    Error,
-}
-
 @Preview
 @Composable
-fun StatefulButtonPreview() {
+fun StatefulButtonTwoPreview() {
     StatefulButton(
         text = "Test",
         initialText = "Tab to process",
-        state = ButtonState.Initial,
+        state = ButtonState.Loading,
     )
 }
+
+*/
