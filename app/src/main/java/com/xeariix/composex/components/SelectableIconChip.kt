@@ -28,11 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.xeariix.composex.sizes.AppStyle
 
 /**
  * A highly customizable icon chip component that displays a label and optionally an icon when selected.
@@ -40,13 +39,11 @@ import com.xeariix.composex.sizes.AppStyle
  * This chip can be used in filters, selection groups, or settings where visual feedback is required upon interaction.
  * The appearance of the chip dynamically changes based on its clicked state, including background, text, and icon color.
  *
- * @param text the text displayed inside the chip.
  * @param onClick called when this button is clicked
  * @param modifier optional [Modifier] to be applied to the chip
- * @param imageVector optional [ImageVector] to display as an icon when the chip is selected
+ * @param icon optional [ImageVector] to display as an icon when the chip is selected
  * @param containerColor the background [Color] of the chip in its default (unclicked) state
  * @param iconColor the [Color] applied to the icon when visible
- * @param textColor the [Color] applied to the label text in the default state
  * @param shape the [Shape] defining the chip's outline
  * @param elevation the [CardElevation] controlling the elevation of the chip in various states
  * @param border optional [BorderStroke] to draw around the chip’s container
@@ -54,26 +51,36 @@ import com.xeariix.composex.sizes.AppStyle
  */
 @Composable
 fun SelectableIconChip(
-    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    imageVector: ImageVector? = null,
-    containerColor: Color = MaterialTheme.colorScheme.onTertiary,
-    iconColor: Color = MaterialTheme.colorScheme.onSurface,
-    textColor: Color = MaterialTheme.colorScheme.primary,
-    shape: Shape = CardDefaults.shape,
-    elevation: CardElevation = CardDefaults.cardElevation(),
-    border: BorderStroke? = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary),
     isClicked: Boolean = false,
+    enabled: Boolean = true,
+    role: Role? = null,
+    onClickLabel: String? = null,
+    shape: Shape = CardDefaults.shape,
+    containerColor: Color = MaterialTheme.colorScheme.onTertiary,
+    onClickContainerColor: Color = MaterialTheme.colorScheme.primary,
+    elevation: CardElevation = CardDefaults.cardElevation(),
+    border: BorderStroke? = null,
+    icon: ImageVector? = null,
+    contentDescription: String? = null,
+    iconSize: Dp = 22.dp,
+    iconColor: Color = MaterialTheme.colorScheme.onSurface,
+    content: @Composable () -> Unit,
 ) {
     val animatedContainerColor by animateColorAsState(
-        targetValue = if (!isClicked) containerColor else MaterialTheme.colorScheme.primary,
+        targetValue = if (!isClicked) containerColor else onClickContainerColor,
         animationSpec = tween(durationMillis = 300),
         label = "ContainerColorAnimation",
     )
 
     Card(
-        modifier = modifier.clickable(onClick = onClick),
+        modifier = modifier.clickable(
+            enabled = enabled,
+            onClickLabel = onClickLabel,
+            role = role,
+            onClick = onClick,
+        ),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = animatedContainerColor),
         elevation = elevation,
@@ -87,7 +94,7 @@ fun SelectableIconChip(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (imageVector != null) {
+            if (icon != null) {
                 AnimatedContent(
                     targetState = isClicked,
                     transitionSpec = {
@@ -97,26 +104,22 @@ fun SelectableIconChip(
                 ) { targetState ->
                     if (targetState) {
                         Icon(
-                            imageVector = imageVector,
-                            contentDescription = null,
+                            imageVector = icon,
+                            contentDescription = contentDescription,
                             modifier = Modifier
-                                .size(22.dp)
+                                .size(iconSize)
                                 .padding(
-                                    top = AppStyle.Paddings.Empty,
-                                    bottom = AppStyle.Paddings.Empty,
-                                    end = AppStyle.Paddings.Small,
+                                    top = 0.dp,
+                                    bottom = 0.dp,
+                                    end = 6.dp,
                                 ),
-                            tint = if (!isClicked) iconColor else Color.White,
+                            tint = iconColor,
                         )
                     }
                 }
             }
 
-            Text(
-                text = text,
-                fontSize = 19.sp,
-                style = TextStyle(color = if (!isClicked) textColor else Color.White),
-            )
+            content()
         }
     }
 }
@@ -125,18 +128,20 @@ fun SelectableIconChip(
 @Composable
 fun IconChipPreview() {
     SelectableIconChip(
-        text = "Filter",
         onClick = {},
-    )
+    ) {
+        Text(text = "Filter")
+    }
 }
 
 @Preview
 @Composable
 fun IconChipIsClickedPreview() {
     SelectableIconChip(
-        text = "Filter",
         onClick = {},
-        imageVector = Icons.Default.Done,
+        icon = Icons.Default.Done,
         isClicked = true,
-    )
+    ) {
+        Text(text = "Filter")
+    }
 }
