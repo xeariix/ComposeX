@@ -2,6 +2,7 @@ package com.xeariix.composex.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.togetherWith
@@ -21,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,7 @@ fun RemovableChip(
     contentAlignment: Alignment = Alignment.TopStart,
     propagateMinConstraints: Boolean = false,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
+    isClickedBackgroundColor: Color = MaterialTheme.colorScheme.background,
     iconSize: Dp = 20.dp,
     isClicked: Boolean = false,
     onClickLabel: String? = null,
@@ -46,9 +49,13 @@ fun RemovableChip(
     paddingTop: Dp = 6.dp,
     paddingEnd: Dp = 10.dp,
     paddingBottom: Dp = 6.dp,
-    //paddingHorizontal: Dp = 15.dp,
-    //paddingVertical: Dp = 6.dp,
 ) {
+    val animatedContainerColor by animateColorAsState(
+        targetValue = if (!isClicked) backgroundColor else isClickedBackgroundColor,
+        animationSpec = tween(durationMillis = 500),
+        label = "ContainerColorAnimation",
+    )
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(40.dp))
@@ -58,7 +65,7 @@ fun RemovableChip(
                 role = role,
                 onClick = onClick,
             )
-            .background(color = backgroundColor)
+            .background(color = animatedContainerColor)
             .padding(
                 start = paddingStart,
                 top = paddingTop,
